@@ -1,0 +1,28 @@
+[package]
+name = "aegis_vault"
+version = "0.1.0"
+edition = "2021"
+description = "Aegis Vault: on-chain spend-policy firewall for AI agents on NEAR"
+repository = "https://github.com/Cubiczan/near-aegis-vault"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+near-sdk = "5.30"
+
+[dev-dependencies]
+near-sdk = { version = "5.30", features = ["unit-testing"] }
+near-workspaces = { version = "0.24", features = ["unstable"] }
+tokio = { version = "1", features = ["full"] }
+serde_json = "1"
+anyhow = "1"
+
+[profile.release]
+codegen-units = 1
+opt-level = "z"
+lto = true
+debug = false
+panic = "abort"
+overflow-checks = true

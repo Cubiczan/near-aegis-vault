@@ -1,0 +1,6 @@
+target/
+node_modules/
+agent/out/
+.env
+*.key
+.vercel

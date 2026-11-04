@@ -1,0 +1,47 @@
+[
+  {
+    "method": "request_spend",
+    "ok": false,
+    "error": "only the registered agent may request spends",
+    "tx": "CBUZR7jQtEzyRX9G3kiraF8LjJMpjjhyCUd3LBNaVbhx",
+    "explorer": "https://testnet.nearblocks.io/txns/CBUZR7jQtEzyRX9G3kiraF8LjJMpjjhyCUd3LBNaVbhx"
+  },
+  {
+    "method": "approve",
+    "ok": false,
+    "error": "owner only",
+    "tx": "7qzxF18pdB67sw2XDXSxfmQjePwiuKqfdmUJ39XLQmGD",
+    "explorer": "https://testnet.nearblocks.io/txns/7qzxF18pdB67sw2XDXSxfmQjePwiuKqfdmUJ39XLQmGD"
+  },
+  {
+    "method": "add_vendor",
+    "ok": false,
+    "error": "owner only",
+    "tx": "344npnF82CBw92JfB32P7fAULub5SmszCqpbiKnPJvnX",
+    "explorer": "https://testnet.nearblocks.io/txns/344npnF82CBw92JfB32P7fAULub5SmszCqpbiKnPJvnX"
+  },
+  {
+    "method": "set_agent",
+    "ok": false,
+    "error": "owner only",
+    "tx": "FS4FFkki3oHLEzDEKqPhca79WBfEUKB95uQzBga4ryod",
+    "explorer": "https://testnet.nearblocks.io/txns/FS4FFkki3oHLEzDEKqPhca79WBfEUKB95uQzBga4ryod"
+  },
+  {
+    "method": "withdraw",
+    "ok": false,
+    "error": "owner only",
+    "tx": "2e3kGE11rULcWh7BYUgoqJRwnGPJsdwHoj97K7RwQRid",
+    "explorer": "https://testnet.nearblocks.io/txns/2e3kGE11rULcWh7BYUgoqJRwnGPJsdwHoj97K7RwQRid"
+  },
+  {
+    "method": "agent key -> vault.approve",
+    "ok": false,
+    "error": "Access key does not allow method approve"
+  },
+  {
+    "method": "agent key -> transfer to attacker",
+    "ok": false,
+    "error": "Access key requires full access"
+  }
+]

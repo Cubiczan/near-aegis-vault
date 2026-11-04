@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aegis Vault: spend-policy firewall for AI agents on NEAR</title>
+<style>
+:root{--bg:#0b0f14;--card:#121821;--mut:#8a97a8;--fg:#e8eef5;--paid:#2fbf71;--held:#f0b429;--blk:#ef4e4e;--acc:#00ec97}
+*{box-sizing:border-box}body{margin:0;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--fg)}
+header{padding:20px 28px;border-bottom:1px solid #1e2733;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+h1{margin:0;font-size:20px}h1 span{color:var(--acc)}.sub{color:var(--mut)}main{padding:20px 28px;display:grid;gap:16px;max-width:1200px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.card{background:var(--card);border:1px solid #1e2733;border-radius:10px;padding:14px}
+.k{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.04em}.v{font-size:20px;font-weight:600;margin-top:4px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px;border-bottom:1px solid #1e2733;vertical-align:top}th{color:var(--mut);font-weight:500;font-size:12px}
+.pill{display:inline-block;padding:2px 8px;border-radius:99px;font-size:12px;font-weight:600}
+.Paid,.Approved{background:#12351f;color:var(--paid)}.Held{background:#3a2e0b;color:var(--held)}.Blocked,.Rejected{background:#3b1414;color:var(--blk)}
+a{color:var(--acc)}code{background:#0d131a;padding:1px 5px;border-radius:4px}.why{color:var(--mut);font-size:12px}
+</style></head><body>
+<header><div><h1>🛡️ Aegis <span>Vault</span></h1><div class="sub">On-chain spend-policy firewall for AI agents · NEAR testnet · live data</div></div>
+<div class="sub">Contract <a id="vlink" target="_blank"></a> · <a href="https://github.com/Cubiczan/near-aegis-vault" target="_blank">GitHub</a></div></header>
+<main>
+<div class="grid" id="stats"></div>
+<div class="card"><div class="k">How it works</div><p>The AI agent's account has <b>no full-access key</b>. Its only key is a NEAR <b>function-call access key</b> that can call one method, <code>request_spend</code>, on this vault. The vault checks every request on-chain: duplicate invoice → vendor allowlist → hard cap → velocity → approval threshold / daily cap. Blocked attempts are recorded too, so you get an audit trail of what a hijacked or prompt-injected agent <i>tried</i> to do.</p><div id="policy" class="why"></div></div>
+<div class="card"><div class="k">Held for owner approval</div><table id="pending"></table></div>
+<div class="card"><div class="k">Decision log (newest first)</div><table id="log"></table></div>
+</main>
+<script>
+const VAULT="vault.aegis-cfo-cz.testnet", RPC="https://rpc.testnet.fastnear.com";
+const EX={WITHIN_POLICY:"Approved vendor, under threshold and daily cap.",NEEDS_APPROVAL:"Large payment, needs human sign-off.",DAILY_CAP:"Today's auto-pay budget used up.",LOW_BALANCE:"Vault would drop below reserve.",DUPLICATE_INVOICE:"Invoice already paid or queued. Duplicate-payment leak stopped.",PAYEE_NOT_ALLOWLISTED:"Payee not in vendor master. Fraud / prompt-injection pattern.",OVER_PER_TX_CAP:"Above hard cap. Agent can never send this.",VELOCITY_LIMIT:"Too many payments too fast. Possible runaway agent.",OWNER_APPROVED:"Owner signed off.",OWNER_REJECTED:"Owner declined."};
+document.getElementById("vlink").textContent=VAULT;document.getElementById("vlink").href="https://testnet.nearblocks.io/address/"+VAULT;
+async function view(method,args={}){const r=await fetch(RPC,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method:"query",params:{request_type:"call_function",finality:"final",account_id:VAULT,method_name:method,args_base64:btoa(JSON.stringify(args))}})});const j=await r.json();return JSON.parse(new TextDecoder().decode(new Uint8Array(j.result.result)))}
+const N=y=>(Number(BigInt(y)/10n**21n)/1000).toFixed(3)+" NEAR";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const short=a=>esc(a.replace(".aegis-cfo-cz.testnet",""));
+async function load(){
+ const [i,p,d]=await Promise.all([view("get_info"),view("get_pending"),view("get_decisions",{limit:100})]);
+ const c=o=>d.filter(x=>x.outcome===o).length;
+ document.getElementById("stats").innerHTML=[["Vault balance",N(i.balance)],["Auto-paid today",N(i.spent_today)],["Paid / approved",c("Paid")+c("Approved")],["Held",i.pending],["Blocked",c("Blocked")],["Approved vendors",i.allowlist.length]].map(([k,v])=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+ const P=i.policy;document.getElementById("policy").innerHTML=`Policy: hard cap ${N(P.per_tx_cap)} · approval at ${N(P.approval_threshold)} · daily auto-pay ${N(P.daily_cap)} · max ${P.max_requests_per_window} requests / ${P.velocity_window_sec}s · agent <code>${esc(i.agent)}</code> · owner <code>${esc(i.owner)}</code>`;
+ document.getElementById("pending").innerHTML=p.length?"<tr><th>#</th><th>Payee</th><th>Amount</th><th>Memo</th><th>Why held</th></tr>"+p.map(x=>`<tr><td>${x.id}</td><td>${short(x.to)}</td><td>${N(x.amount)}</td><td>${esc(x.memo)}</td><td class="why">${esc(x.reason)}</td></tr>`).join(""):"<tr><td class='why'>Nothing waiting.</td></tr>";
+ document.getElementById("log").innerHTML="<tr><th>#</th><th>Outcome</th><th>Payee</th><th>Amount</th><th>Invoice</th><th>Rule &amp; explanation</th><th>Time (UTC)</th></tr>"+d.map(x=>`<tr><td>${x.id}</td><td><span class="pill ${x.outcome}">${x.outcome}</span></td><td>${short(x.to)}</td><td>${N(x.amount)}</td><td>${esc(x.invoice_hash)}<div class="why">${esc(x.memo)}</div></td><td><code>${x.rule}</code><div class="why">${esc(EX[x.rule]||"")} ${esc(x.reason)}</div></td><td class="why">${new Date(Number(BigInt(x.timestamp_ns)/1000000n)).toISOString().slice(0,19).replace("T"," ")}</td></tr>`).join("");
+}
+load().catch(e=>document.getElementById("stats").textContent="RPC error: "+e);setInterval(()=>load().catch(()=>{}),15000);
+</script></body></html>
