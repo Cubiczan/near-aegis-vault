@@ -1,1 +1,2 @@
-No held payments.
+approve #18 (INV-2002 / NOV5B): https://testnet.nearblocks.io/txns/CujVwiaHenpFX3VLYEtAzq3geezaZFErYAxC7W2LGeH7
+reject #19 (INV-1002 / NOV5B): https://testnet.nearblocks.io/txns/5zdJsddFV1jmmTgvedwuuZzScGaE3tevobVHscaAATyN

@@ -3,6 +3,7 @@
 Built at **NEAR HACKATHON** (Nov 2026). Tracks: AI Security & Defense (`security`), Agent Economy (`agents`), Autonomous Business (`business`), Real-World Money (`realworld`).
 
 **Live dashboard (NEAR testnet, read-only):** https://near-aegis-vault.vercel.app
+**Demo video (~2 min):** [docs/demo.mp4](docs/demo.mp4)
 **Contract:** [`vault.aegis-cfo-cz.testnet`](https://testnet.nearblocks.io/address/vault.aegis-cfo-cz.testnet) · **All tx links:** [docs/TESTNET.md](docs/TESTNET.md)
 
 ![dashboard](docs/screenshots/dashboard.png)

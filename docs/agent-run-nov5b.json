@@ -1,0 +1,72 @@
+[
+  {
+    "invoice": "INV-1001",
+    "to": "acme-supply.aegis-cfo-cz.testnet",
+    "amount": "0.2",
+    "outcome": "Paid",
+    "rule": "WITHIN_POLICY",
+    "id": "14",
+    "tx": "5wZfHRyacid7UMgrrAy7dyYGUi36WCURTcSdVz7gPwih",
+    "explorer": "https://testnet.nearblocks.io/txns/5wZfHRyacid7UMgrrAy7dyYGUi36WCURTcSdVz7gPwih"
+  },
+  {
+    "invoice": "INV-2001",
+    "to": "globex-freight.aegis-cfo-cz.testnet",
+    "amount": "0.3",
+    "outcome": "Paid",
+    "rule": "WITHIN_POLICY",
+    "id": "15",
+    "tx": "6f6WNPa2JC168Xk7DgoPFYnKodfAJL7XrPWx2zEe6tAh",
+    "explorer": "https://testnet.nearblocks.io/txns/6f6WNPa2JC168Xk7DgoPFYnKodfAJL7XrPWx2zEe6tAh"
+  },
+  {
+    "invoice": "INV-1001",
+    "to": "acme-supply.aegis-cfo-cz.testnet",
+    "amount": "0.2",
+    "outcome": "Blocked",
+    "rule": "DUPLICATE_INVOICE",
+    "id": "16",
+    "tx": "72xfQ8YBZprrXkdX8iioqioH7JthEQ7F9Kcvok4UUEJe",
+    "explorer": "https://testnet.nearblocks.io/txns/72xfQ8YBZprrXkdX8iioqioH7JthEQ7F9Kcvok4UUEJe"
+  },
+  {
+    "invoice": "INV-6666",
+    "to": "aegis-attacker-cz.testnet",
+    "amount": "0.9",
+    "outcome": "Blocked",
+    "rule": "PAYEE_NOT_ALLOWLISTED",
+    "id": "17",
+    "tx": "CLfsuGevqtWFTQeYW6S2RKYPX5tk1pY23FmPggjomuP7",
+    "explorer": "https://testnet.nearblocks.io/txns/CLfsuGevqtWFTQeYW6S2RKYPX5tk1pY23FmPggjomuP7"
+  },
+  {
+    "invoice": "INV-2002",
+    "to": "globex-freight.aegis-cfo-cz.testnet",
+    "amount": "0.5",
+    "outcome": "Held",
+    "rule": "NEEDS_APPROVAL",
+    "id": "18",
+    "tx": "rNZ6eMkTAvam8hd8cZZZ62W5aMDN93TJdBHDi853atp",
+    "explorer": "https://testnet.nearblocks.io/txns/rNZ6eMkTAvam8hd8cZZZ62W5aMDN93TJdBHDi853atp"
+  },
+  {
+    "invoice": "INV-1002",
+    "to": "acme-supply.aegis-cfo-cz.testnet",
+    "amount": "0.2",
+    "outcome": "Held",
+    "rule": "DAILY_CAP",
+    "id": "19",
+    "tx": "F5pz9M2vzBqhm4krCbWWSeEmrB1tevmsVq9z7qQmLgcj",
+    "explorer": "https://testnet.nearblocks.io/txns/F5pz9M2vzBqhm4krCbWWSeEmrB1tevmsVq9z7qQmLgcj"
+  },
+  {
+    "invoice": "INV-1003",
+    "to": "acme-supply.aegis-cfo-cz.testnet",
+    "amount": "3",
+    "outcome": "Blocked",
+    "rule": "OVER_PER_TX_CAP",
+    "id": "20",
+    "tx": "6qkGyFCR9TzGhsuDP1ffFyhcCJZpWEoRhQrfQWc36b28",
+    "explorer": "https://testnet.nearblocks.io/txns/6qkGyFCR9TzGhsuDP1ffFyhcCJZpWEoRhQrfQWc36b28"
+  }
+]
